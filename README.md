@@ -19,3 +19,6 @@ In the Neo4J community edition, bulk import cannot be done into an existing
 database. So, this script will wipe / delete the contents and load the 
 data. This means the password will be reset to the default 'neo4j' 
 
+
+
+![Sample Loaded data in Neo4J](https://raw.githubusercontent.com/p2c2e/neo4j-xlsx-import/master/SampleImport.png?raw=true)
