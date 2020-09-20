@@ -26,7 +26,6 @@ import stat
 input_filename="sampledata.xlsx"
 
 # Location of CSV files and location of the Neo4J Data folder
-import_root="$HOME/workspace/neo4j-pdr/testing/"
 import_root="/tmp/testing"
 data_root=import_root+"/data"
 
