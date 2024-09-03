@@ -1,0 +1,12 @@
+[project]
+name = "neo4j-xlsx-import"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openpyxl>=3.1.5",
+    "pandas>=2.2.2",
+    "xlrd>=2.0.1",
+    "yaml",
+]

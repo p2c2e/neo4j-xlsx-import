@@ -1,0 +1,30 @@
+{
+  "entities" : [
+    { 
+      "entity1_name" : { 
+        "column" : "col1",
+        "property1" : "prop_col1",
+        "property2" : "prop_col2"
+      },
+      "entity2" : {
+      "column" : "col2"
+      },
+      "entity3" : {
+        "column" : "col3",
+        "prop3" : "prop_col3"
+      }
+    }
+  ],
+  "relations" : [
+    {
+      "rel1name" : {
+        "from": "col1",
+        "to": "col2",
+        "properties": {
+                        "property1" : "col4",
+                        "property2" : "col5"
+        }
+      }
+    }
+  ]
+}
