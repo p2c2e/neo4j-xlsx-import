@@ -1,0 +1,36 @@
+{
+  "entities": [
+    {
+      "CANDIDATE": [
+        { "column": "EMP_ID",
+          "name": "Candidate First and Last Name",
+          "cloud": "Cloud",
+          "company": "Org",
+          "career_stage": "Career Stages for Report" },
+        {
+          "column": "Domain panel CSID",
+          "name": "Domain Panel"
+        }
+      ],
+      "CAREER_STAGE": {
+        "column": "Career Stages for Report",
+      },
+#      "PANELIST": {
+#        "column": "Domain Panel"
+#      }
+    }
+  ],
+  "relations": [
+    "INTERVIEWED_BY": {
+      "from": "EMP_ID",
+      "to": "Domain panel CSID",
+      "properties": {
+        "source_type": "Category"
+      }
+    },
+    "IN_CAREER_STAGE": {
+      "from": "Candidate First and Last Name",
+      "to": "Career Stages for Report"
+    }
+  ]
+}

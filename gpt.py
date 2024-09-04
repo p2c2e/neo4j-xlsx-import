@@ -7,21 +7,41 @@ import os
 def process_entities(sheet, entities_config, import_folder):
     node_files = []
     for entity_config in entities_config:
-        for entity_name, properties in entity_config.items():
+        for entity_name, properties_list in entity_config.items():
             # Replace spaces with underscores in entity name
             entity_name_sanitized = entity_name.replace(' ', '_')
 
-            # Extract column for entity ID
-            entity_column = properties['column']
-            entity_df = pd.DataFrame(sheet[entity_column].unique(), columns=[f'{entity_name_sanitized}:ID'])
+            # If properties_list is not a list, convert it to a list
+            if not isinstance(properties_list, list):
+                properties_list = [properties_list]
 
-            # Add properties columns if they exist
-            for prop_name, prop_col in properties.items():
-                if (prop_name != 'column') and (prop_name != 'LABEL'):
-                    entity_df[prop_name] = sheet[prop_col]
+            # Initialize the DataFrame to store entity data
+            entity_df = pd.DataFrame()
 
-            # Add the :LABEL column without double-quoting
+            for properties in properties_list:
+                # Extract column for entity ID
+                entity_column = properties['column']
+
+                # Create a temporary DataFrame for the current entity column
+                temp_df = pd.DataFrame()
+                temp_df[f'{entity_name_sanitized}:ID'] = sheet[entity_column]
+
+                # Add properties columns if they exist
+                for prop_name, prop_col in properties.items():
+                    if prop_name != 'column':
+                        temp_df[prop_name] = sheet[prop_col]
+
+                # Merge the temporary DataFrame into the main entity DataFrame
+                entity_df = pd.concat([entity_df, temp_df], ignore_index=True)
+
+            # Add the :LABEL column
             entity_df[':LABEL'] = entity_name_sanitized
+
+            # Fill missing property columns with empty strings
+            for properties in properties_list:
+                for prop_name in properties:
+                    if prop_name != 'column' and prop_name not in entity_df.columns:
+                        entity_df[prop_name] = ""
 
             # Save to CSV with quoting applied by pandas
             filename = os.path.join(import_folder, f'{entity_name_sanitized}.csv')
