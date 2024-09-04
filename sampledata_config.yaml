@@ -1,0 +1,49 @@
+{
+  "entities": [
+    {
+      "PERSON": {
+        "column": "EMP_ID",
+        "fname": "FIRST_NAME",
+        "lname": "LAST_NAME",
+        "start": "STARTDATE",
+        "gender": "GENDER"
+      },
+      "TITLE": {
+        "column": "TITLE_NAME",
+      },
+      "GROUP": {
+        "column": "GROUP"
+      },
+      "CLIENT_NAME": {
+        "column": "CLIENT_NAME"
+      },
+      "PROJECT_NAME": {
+        "column": "PROJECT_NAME"
+      }
+    }
+  ],
+  "relations": [
+    "IS_SUPERVISED_BY": {
+      "from": "EMP_ID",
+      "to": "SUPERVISOR_ID",
+      "properties": {
+      }
+    },
+    "IS_IN_TITLE": {
+      "from": "EMP_ID",
+      "to": "TITLE_NAME"
+    },
+    "IS_IN_GROUP": {
+      "from": "EMP_ID",
+      "to": "GROUP"
+    },
+    "WORKS_FOR": {
+      "from": "EMP_ID",
+      "to": "CLIENT_NAME"
+    },
+    "IS_PART_OF_PROJECT": {
+      "from": "EMP_ID",
+      "to": "PROJECT_NAME"
+    }
+  ]
+}
