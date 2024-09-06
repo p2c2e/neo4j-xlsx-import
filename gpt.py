@@ -43,6 +43,9 @@ def process_entities(sheet, entities_config, import_folder):
                     if prop_name != 'column' and prop_name not in entity_df.columns:
                         entity_df[prop_name] = ""
 
+            # Remove duplicate rows based on the ":ID" column
+            entity_df = entity_df.drop_duplicates(subset=[f'{entity_name_sanitized}:ID'], keep='first')
+
             # Save to CSV with quoting applied by pandas
             filename = os.path.join(import_folder, f'{entity_name_sanitized}.csv')
             entity_df.to_csv(filename, index=False, quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
@@ -67,6 +70,9 @@ def process_relations(sheet, relations_config, import_folder):
             # Add properties to the additional CSV
             for prop_name, prop_col in properties.items():
                 additional_df[prop_name] = sheet[prop_col]
+
+            # Remove duplicate rows based on the ":START_ID" and ":END_ID" columns
+            additional_df = additional_df.drop_duplicates(subset=[':START_ID', ':END_ID'], keep='first')
 
             # Replace spaces with underscores in column names and filenames
             from_col_sanitized = from_column.replace(' ', '_')
