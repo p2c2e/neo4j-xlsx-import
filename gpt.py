@@ -22,6 +22,10 @@ def process_entities(sheet, entities_config, import_folder):
                 # Extract column for entity ID
                 entity_column = properties['column']
 
+                # Skip if the entity column is empty
+                if sheet[entity_column].isnull().all():
+                    continue
+
                 # Create a temporary DataFrame for the current entity column
                 temp_df = pd.DataFrame()
                 temp_df[f'{entity_name_sanitized}:ID'] = sheet[entity_column]
@@ -30,6 +34,9 @@ def process_entities(sheet, entities_config, import_folder):
                 for prop_name, prop_col in properties.items():
                     if prop_name != 'column':
                         temp_df[prop_name] = sheet[prop_col]
+
+                # Remove rows where the entity ID is empty
+                temp_df = temp_df[temp_df[f'{entity_name_sanitized}:ID'].notna()]
 
                 # Merge the temporary DataFrame into the main entity DataFrame
                 entity_df = pd.concat([entity_df, temp_df], ignore_index=True)
@@ -61,11 +68,18 @@ def process_relations(sheet, relations_config, import_folder):
             to_column = relation_details['to']
             properties = relation_details.get('properties', {})
 
+            # Skip if the from or to columns are empty
+            if sheet[from_column].isnull().all() or sheet[to_column].isnull().all():
+                continue
+
             # Create the additional CSV file with properties
             additional_df = pd.DataFrame()
             additional_df[':START_ID'] = sheet[from_column]
             additional_df[':END_ID'] = sheet[to_column]
             additional_df[':TYPE'] = relation_name  # No double-quote for :TYPE
+
+            # Remove rows where from/to IDs are empty
+            additional_df = additional_df[additional_df[':START_ID'].notna() & additional_df[':END_ID'].notna()]
 
             # Add properties to the additional CSV
             for prop_name, prop_col in properties.items():
