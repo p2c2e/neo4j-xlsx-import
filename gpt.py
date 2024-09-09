@@ -1,5 +1,5 @@
 import pandas as pd
-import yaml
+import json
 import argparse
 import csv
 import os
@@ -115,9 +115,9 @@ def process_xlsx_file(xlsx_file, config_file, data_folder, import_folder):
     # Read the XLSX file
     sheet = pd.read_excel(xlsx_file)
 
-    # Load the YAML config
+    # Load the json config
     with open(config_file, 'r') as file:
-        config = yaml.safe_load(file)
+        config = json.load(file)
 
     # Process entities and relations
     node_files = process_entities(sheet, config['entities'], import_folder)
@@ -151,9 +151,9 @@ def process_xlsx_file(xlsx_file, config_file, data_folder, import_folder):
 
 if __name__ == '__main__':
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Process an XLSX file based on a config.yaml.')
+    parser = argparse.ArgumentParser(description='Process an XLSX file based on a config.json.')
     parser.add_argument('xlsx_file', type=str, help='The path to the input XLSX file.')
-    parser.add_argument('config_file', type=str, help='The path to the config.yaml file.')
+    parser.add_argument('config_file', type=str, help='The path to the config.json file.')
     parser.add_argument('data_folder', type=str, help='The relative path to the folder where CSV files will be generated.')
     parser.add_argument('import_folder', type=str, help='The relative path to the import folder for Neo4j.')
 
